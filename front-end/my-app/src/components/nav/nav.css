@@ -1,0 +1,51 @@
+#nav-bar{
+    margin:0;
+    padding:0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+
+    background-color: #121921;
+    color: white;
+}
+#nav-bar h1{
+    cursor: pointer;
+}
+#list-of-country{
+    cursor: pointer;
+}
+#nav-bar div{
+    margin:0;
+    padding: 5px;
+}
+#nav-bar div:hover{
+    background-color: orange;
+}
+#nav-bar a{
+    text-decoration: none;
+    color: white;
+}
+
+#search-box input{
+    width: 20em;
+    
+}
+#search-box button{
+    background-color: #fdbd69;
+        padding: 3px;
+}
+
+@media (max-width: 768px){
+    #nav-bar{
+        flex-direction: column;
+        padding: 10px;
+    }
+    #nav-bar div{
+        margin: 10px;
+    }
+}
+
+@media (max-width: 576px){
+    
+}
