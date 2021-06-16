@@ -8,3 +8,5 @@ CREATE TABLE users (
 
 INSERT INTO users (email, name, password) values('darayuthhang12@gmail.com', 'yuth', '123');
 SELECT * FROM users;
+
+

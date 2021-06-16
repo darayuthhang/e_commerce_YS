@@ -1,0 +1,6 @@
+
+psql -d postgres -U me  
+----> access user of db
+
+
+postgres=> \c users ----> access table in db
