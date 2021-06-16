@@ -1,6 +1,6 @@
 import React from 'react';
 import './nav.css';
-
+import { useHistory, Link } from "react-router-dom";
 const NavBar = () => {
     return (
         <nav id="nav-bar">
@@ -19,7 +19,7 @@ const NavBar = () => {
 
             <div id="list-of-country">list of country</div>
             <div>
-                 <a href="#">Sigin</a>
+                 <Link to="/register">Sign up</Link>
             </div>
             <div>
                 <a href="#">Return </a>
