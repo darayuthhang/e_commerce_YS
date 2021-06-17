@@ -26,3 +26,5 @@ app.post("/register", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Example app listening at http://localhost:${PORT}`)
 })
+
+module.exports = app

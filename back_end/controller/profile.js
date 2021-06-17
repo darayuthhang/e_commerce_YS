@@ -9,7 +9,6 @@ const Register = async (req, res) => {
         try {
             //hash password
             let hashPassword = await bcrypt.hash(password, saltRounds);
-            console.log("success register");
                 //if hashpassword success
             if(hashPassword){
                  const items = await pool.query(INSERT_QUERY, [email, name, hashPassword]);
