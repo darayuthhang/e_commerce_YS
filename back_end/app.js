@@ -22,6 +22,10 @@ app.post("/register", async (req, res) => {
     await profile.Register(req, res);
 })
 
+app.post('/login', async (req, res) => {
+  await profile.Login(req, res);
+})
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening at http://localhost:${PORT}`)
