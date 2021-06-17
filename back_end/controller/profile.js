@@ -46,16 +46,19 @@ const Login = async (req, res) => {
             const users = await service.getUser(email)
             //if use exist, access the row, else throw error;
             const rowOfUsers = users?.rows;
-            for(let row =0 ; row < rowOfUsers.length; row++){
-                const passExist = await bcrypt.compare(password, rowOfUsers[row].password);
-                if(passExist){
-                    const accessToken = generateAccessToken(rowOfUsers[row].id)
-                    const refreshToken = jwt.sign({user_id: rowOfUsers[row].id}, process.env.REFRESH_TOKEN_SECRET)
-                    //insert refreshtoken with id
-                    await service.insertRefreshTokenIntoUser(refreshToken, rowOfUsers[row].id);
-                    return res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken })
-                } 
+            if(rowOfUsers !== null || rowOfUsers !== "undefined"){
+                for(let row =0 ; row < rowOfUsers.length; row++){
+                    const passExist = await bcrypt.compare(password, rowOfUsers[row].password);
+                    if(passExist){
+                        const accessToken = generateAccessToken(rowOfUsers[row].id)
+                        const refreshToken = jwt.sign({user_id: rowOfUsers[row].id}, process.env.REFRESH_TOKEN_SECRET)
+                        //insert refreshtoken with id
+                        await service.insertRefreshTokenIntoUser(refreshToken, rowOfUsers[row].id);
+                        return res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken })
+                    } 
+                }
             }
+          
         } catch (error) {
             console.log(error.message);
             return res.status(404).json("user not success");

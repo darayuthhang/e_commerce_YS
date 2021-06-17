@@ -4,13 +4,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import './register.css';
 import { addUser } from '../../redux/action/userAction';
 import service from '../../service/service';
+import Error from '../error/error';
 
 const Register = () => {
     const history = useHistory();
     const dispatch = useDispatch();
     const users = useSelector(state => state.UserReducer.profile);
 
-  
+    const [error, setError] = useState(true);
     const [userName, setUsername] = useState(null);
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
@@ -38,6 +39,8 @@ const Register = () => {
         //if user register successfully, dispatch data to redux.
         if(registerExist){
             dispatch(addUser(Users))
+            //switch route
+            history.push("/login");
         }else{
             alert("Register does not success.");
         }
@@ -60,6 +63,7 @@ const Register = () => {
                  <input type="password" onChange={onChangePassword}/>
                  <button>Create Account</button>
             </form>
+          
         </div>
     )
 }
