@@ -1,6 +1,7 @@
 const {pool} = require("../config/db");
 const constants = require("../constant/constants");
 
+
 module.exports = {
     async insertUser(user){
         await pool.query(constants.INSERT_QUERY, [user.email, user.name, user.password, new Date()]);
@@ -11,5 +12,9 @@ module.exports = {
     },
     async insertRefreshTokenIntoUser(refreshToken, id){
          await pool.query(constants.INSERT_REFRESH_TOKEN, [refreshToken, id]);
+    },
+    async getAccessToken(refreshToken){
+        const users = await pool.query(constants.GET_ACCESS_TOKEN, [refreshToken]);
+        return users;
     }
 }

@@ -5,6 +5,7 @@ const PORT = 3000;
 const express = require('express')
 const app = express()
 const cors = require('cors');
+const requireAuth = require("./auth/auth");
 
 app.use(express.json());
 app.use(express.urlencoded({
@@ -25,7 +26,14 @@ app.post("/register", async (req, res) => {
 app.post('/login', async (req, res) => {
   await profile.Login(req, res);
 })
+app.post("/token", async (req, res) => {
+    await profile.getAccessToken(req, res);
+})
 
+
+app.get("/yourstore/home", async (req, res) => {
+    await profile.YourStoreHome(req, res);
+})
 
 app.listen(PORT, () => {
   console.log(`Example app listening at http://localhost:${PORT}`)
