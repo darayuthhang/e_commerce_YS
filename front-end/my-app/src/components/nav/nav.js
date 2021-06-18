@@ -17,7 +17,7 @@ const NavBar = () => {
                <button>Search</button>
             </div>
 
-            <div id="list-of-country">list of country</div>
+            <Link to="/login">Login</Link>
             <div>
                  <Link to="/register">Sign up</Link>
             </div>

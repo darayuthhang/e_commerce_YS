@@ -46,12 +46,13 @@ const Login = async (req, res) => {
             const users = await service.getUser(email)
             //if use exist, access the row, else throw error;
             const rowOfUsers = users?.rows;
-            if(rowOfUsers !== null || rowOfUsers !== "undefined"){
+            if(rowOfUsers !== null || rowOfUsers !== undefined){
                 for(let row =0 ; row < rowOfUsers.length; row++){
                     const passExist = await bcrypt.compare(password, rowOfUsers[row].password);
                     if(passExist){
-                        const accessToken = generateAccessToken(rowOfUsers[row].id)
-                        const refreshToken = jwt.sign({user_id: rowOfUsers[row].id}, process.env.REFRESH_TOKEN_SECRET)
+                        const user = {id:rowOfUsers[row].id}
+                        const accessToken = generateAccessToken(user)
+                        const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
                         //insert refreshtoken with id
                         await service.insertRefreshTokenIntoUser(refreshToken, rowOfUsers[row].id);
                         return res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken })
@@ -67,24 +68,37 @@ const Login = async (req, res) => {
     return res.status(404).json("forbidden");
 }
 
+const YourStoreHome = async (req, res) => {
+    return res.status(200).json("Success");
+}
+
+const getAccessToken = async (req, res) => {
+    const refreshToken = req.body.token;
+    if (refreshToken == null) return res.sendStatus(401)
+    //select item from db
+    const users = await service.getAccessToken(refreshToken)
+    const refreshTokenExist = users?.rows[0]?.refreshtoken;
+ 
+    if(refreshTokenExist === null || refreshTokenExist === undefined){
+       return res.status(401).json("forbidden");
+    }
+    if(refreshToken === refreshTokenExist){
+        const user  = await jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+        const accessToken =  generateAccessToken({id: user.id});
+        return res.status(200).json({accessToken: accessToken});
+    }
+    return res.status(404).json("not found");
+     
+}
 
 //***** we will take of these later  ************/
-function generateAccessToken(id) {
-  return jwt.sign({user_id:id}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
+function generateAccessToken(user) {
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
 }
-function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
-  if (token == null) return res.sendStatus(401)
 
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-    console.log(err)
-    if (err) return res.sendStatus(403)
-    req.user = user
-    next()
-  })
-}
 module.exports ={
     Register:Register,
-    Login:Login
+    Login:Login,
+    YourStoreHome:YourStoreHome,
+    getAccessToken:getAccessToken
 }
