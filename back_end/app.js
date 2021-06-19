@@ -33,7 +33,7 @@ app.post("/token", async (req, res) => {
 app.get("/api/yourstore/home",requireAuth, async (req, res) => {
     await profile.YourStoreHome(req, res);
 })
-app.delete("/logout", async (req, res) => {
+app.post("/logout", async (req, res) => {
   await profile.Logout(req, res);
 })
 app.listen(PORT, () => {

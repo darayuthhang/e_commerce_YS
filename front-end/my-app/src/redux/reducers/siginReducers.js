@@ -1,21 +1,13 @@
 import { ActionTypes } from "../constants/action-types";
-
-const initalState = {
+const siginState  = {
     profile:{
-        name: "",
-        email: "",
-        password:""
+        sigin_in: false
     }
- 
 }
 
-/*
-@payload  object data contain, userName, email, and password.
-
-*/
-export const UserReducer = (state = initalState, {type, payload}) => {
+export const signInReducer = (state = siginState, {type, payload}) => {
     switch (type) {
-        case ActionTypes.ADD_USER:
+        case ActionTypes.SIGN_IN:
             return {
                 ...state,
                 profile:payload 
@@ -25,5 +17,4 @@ export const UserReducer = (state = initalState, {type, payload}) => {
             return state;
     }
 }
-
 
