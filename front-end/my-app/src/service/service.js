@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { REGISTER_URL, LOGIN_URL } from './endPoint';
+import { REGISTER_URL, LOGIN_URL, ACCESS_TOKEN_URL, YOUR_HOME_URL } from './endPoint';
 class Service {
 
     /**
@@ -34,6 +34,34 @@ class Service {
             //  response = await axios.post('https://jsonplaceholder.typicode.com/posts');
         } catch (error) {
             console.log(error);
+        }
+        return response;
+    }
+
+    async getAccessToken(refreshToken){
+        let response = {};
+        const data = {
+            token: refreshToken
+        }
+        try {
+              //axios.post accept two parameters: (URL, Data);
+             response = await axios.post(ACCESS_TOKEN_URL, data);
+          
+        } catch (error) {
+             console.log(error);
+        }
+        return response;
+    }
+
+    async fetchRoute(token){
+        let response = {};
+            // { headers: {"Authorization" : `Bearer ${token}`} }
+        try {
+              //axios.post accept two parameters: (URL, Data);
+             response = await axios.get(YOUR_HOME_URL, { headers: {"Authorization" : `Bearer ${token}`} });
+   
+        } catch (error) {
+             console.log(error);
         }
         return response;
     }

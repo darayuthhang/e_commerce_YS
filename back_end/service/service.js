@@ -10,11 +10,16 @@ module.exports = {
         const users = await pool.query(constants.SELECT_EMAIL, [email])
         return users;
     },
-    async insertRefreshTokenIntoUser(refreshToken, id){
-         await pool.query(constants.INSERT_REFRESH_TOKEN, [refreshToken, id]);
-    },
-    async getAccessToken(refreshToken){
-        const users = await pool.query(constants.GET_ACCESS_TOKEN, [refreshToken]);
+    // async insertRefreshTokenIntoUser(refreshToken, id){
+    //      await pool.query(constants.INSERT_REFRESH_TOKEN, [refreshToken, id]);
+    // },
+    // async getAccessToken(refreshToken){
+    //     const users = await pool.query(constants.GET_ACCESS_TOKEN, [refreshToken]);
+    //     return users;
+    // },
+    async getAllusers(){
+        const users = await pool.query(constants.SELECT_ALL_USERS);
         return users;
-    }
+    },
+    
 }

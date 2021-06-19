@@ -2,7 +2,6 @@ CREATE TABLE users (
   ID SERIAL PRIMARY KEY,
   email text UNIQUE NOT Null,
   name VARCHAR(255),
-  refreshToken VARCHAR(255) DEFAULT NULL,
   entries BIGINT DEFAULT 0,
   password VARCHAR(255),
   joined TIMESTAMP NOT NULL
