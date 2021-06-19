@@ -1,9 +1,8 @@
 import {ActionTypes} from '../constants/action-types';
 
-export const addUser = (User) => {
+export const Sigin = (User) => {
     return {
-        type:ActionTypes.ADD_USER,
+        type:ActionTypes.SIGN_IN,
         payload: User
     }
 }
-

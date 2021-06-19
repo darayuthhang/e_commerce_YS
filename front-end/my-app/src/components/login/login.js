@@ -2,11 +2,16 @@ import React, {useState} from 'react';
 import './login.css';
 import service from '../../service/service';
 import { useHistory, Link } from "react-router-dom";
+import {useDispatch, useSelector} from 'react-redux';
+import { Sigin } from '../../redux/action/siginAction';
 
 const Login = () => {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     const history = useHistory();
+     const dispatch = useDispatch();
+    const {sigin_in} = useSelector(state => state.signInReducer.profile);
+    
 
     const onChangeEmail = (e) => {
         setEmail(e.target.value);
@@ -26,12 +31,16 @@ const Login = () => {
             const refreshToken = loginSuccess?.data?.refreshToken;
             const accessToken = loginSuccess?.data?.accessToken;
        
-            if(refreshToken === null || refreshToken === "undefined"){
+            if(refreshToken === null || refreshToken === undefined){
                 alert("refreshToken does not exist")
             }else{
                 //store refresh token in local storage.
                 localStorage.setItem("accessToken", accessToken);
                 localStorage.setItem("refreshToken", refreshToken);
+                const user = {
+                    sigin_in:true
+                }
+                dispatch(Sigin(user))
                 history.push("/YourHome")
             }
         }

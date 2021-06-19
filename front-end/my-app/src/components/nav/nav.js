@@ -2,6 +2,11 @@ import React from 'react';
 import './nav.css';
 import { useHistory, Link } from "react-router-dom";
 const NavBar = () => {
+    let refreshToken =  localStorage.getItem("refreshToken") || "";
+
+    const handleLogout = () => {
+        localStorage.clear();
+    }
     return (
         <nav id="nav-bar">
           
@@ -16,8 +21,11 @@ const NavBar = () => {
                <input type="search" />
                <button>Search</button>
             </div>
-
-            <Link to="/login">Login</Link>
+            {refreshToken ?
+            <Link onClick={handleLogout}>logout</Link> :
+            <Link to="/login">Login</Link> 
+            }
+           
             <div>
                  <Link to="/register">Sign up</Link>
             </div>
