@@ -3,14 +3,14 @@ import './login.css';
 import service from '../../service/service';
 import { useHistory, Link } from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux';
-import { Sigin } from '../../redux/action/siginAction';
+
 
 const Login = () => {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     const history = useHistory();
      const dispatch = useDispatch();
-    const {sigin_in} = useSelector(state => state.signInReducer.profile);
+
     
 
     const onChangeEmail = (e) => {
@@ -37,10 +37,6 @@ const Login = () => {
                 //store refresh token in local storage.
                 localStorage.setItem("accessToken", accessToken);
                 localStorage.setItem("refreshToken", refreshToken);
-                const user = {
-                    sigin_in:true
-                }
-                dispatch(Sigin(user))
                 history.push("/YourHome")
             }
         }

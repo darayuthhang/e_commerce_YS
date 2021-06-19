@@ -34,7 +34,6 @@ const Logout = async (req, res) => {
     const {token} = req.body;
     if(myCache.has(token)){
         myCache.del(token)
-    
         return res.status(200).json({
             "message":"successfully",
             "success":true
