@@ -1,7 +1,7 @@
 'use strict';
 require('dotenv').config();
 const profile = require("./controller/profile")
-const PORT = 3000;
+const PORT = 3001;
 const express = require('express')
 const app = express()
 const cors = require('cors');
