@@ -19,7 +19,7 @@ export const ProtectedRoute =  ({
     <Route
       {...rest}
       render={props => {
-        if (refreshToken !== null || refreshToken !== undefined) {
+        if (refreshToken) {
           return <Component {...props} />;
         } else {
           return (

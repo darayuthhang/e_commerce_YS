@@ -1,7 +1,11 @@
 import axios from 'axios';
 import { REGISTER_URL, LOGIN_URL, ACCESS_TOKEN_URL, YOUR_HOME_URL, LOGOUT_URL } from './endPoint';
 class Service {
+    
 
+    constructor(){
+        this.response = null
+    }
     /**
      * @description send post request to the back-end.
      * @param {*} data contain username, email, and password
@@ -9,78 +13,78 @@ class Service {
      
      */
     async register(data){
-        let response = {};
         const headers = {
               "Content-Type": "application/json" 
         }
         try {
             //axios.post accept two parameters: (URL, Data);
-             response = await axios.post(REGISTER_URL, data, headers);
+             this.response = await axios.post(REGISTER_URL, data, headers);
             //  response = await axios.post('https://jsonplaceholder.typicode.com/posts');
         } catch (error) {
             console.log(error);
         }
-        return response;
+        return this.response;
     }
 
     async login(data){
-        let response = {};
+        let response = null;
         const headers = {
               "Content-Type": "application/json" 
         }
         try {
             //axios.post accept two parameters: (URL, Data);
-             response = await axios.post(LOGIN_URL, data, headers);
+             this.response = await axios.post(LOGIN_URL, data, headers);
             //  response = await axios.post('https://jsonplaceholder.typicode.com/posts');
         } catch (error) {
             console.log(error);
         }
-        return response;
+        return this.response ;
     }
 
     async getAccessToken(refreshToken){
-        let response = {};
+
         const data = {
             token: refreshToken
         }
         try {
               //axios.post accept two parameters: (URL, Data);
-             response = await axios.post(ACCESS_TOKEN_URL, data);
+             this.response  = await axios.post(ACCESS_TOKEN_URL, data);
           
         } catch (error) {
              console.log(error);
         }
-        return response;
+        return this.response ;
     }
 
     async fetchRoute(token){
-        let response = {};
+     
             // { headers: {"Authorization" : `Bearer ${token}`} }
         try {
               //axios.post accept two parameters: (URL, Data);
-             response = await axios.get(YOUR_HOME_URL, { headers: {"Authorization" : `Bearer ${token}`} });
-   
+            this.response  = await axios.get(YOUR_HOME_URL, { headers: {"authorization" : `Bearer ${token}`} });
+            return this.response;
         } catch (error) {
-             console.log(error);
+            console.log(error);
+      
         }
-        return response;
+        return this.response ;
     }
 
  
     async fetchLogoutRoute(refreshToken){
         console.log("lgout");
-        let response = {};
+
         const data = {
             token: refreshToken
         }
         try {
               //axios.post accept two parameters: (URL, Data);
-             response = await axios.post(LOGOUT_URL, data);
+             this.response = await axios.post(LOGOUT_URL, data);
           
         } catch (error) {
              console.log(error);
         }
-        return response;
+        return this.response;
     }
 }
 
