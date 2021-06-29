@@ -2,8 +2,6 @@ require('dotenv').config();
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const service = require("../service/service");
-const NodeCache = require( "node-cache" );
-const myCache = new NodeCache();
 const jwt = require("jsonwebtoken");
 
 const Register = async (req, res) => {
@@ -32,17 +30,16 @@ const Register = async (req, res) => {
 
 const Logout = async (req, res) => {
     const {token} = req.body;
-    if(myCache.has(token)){
-        myCache.del(token)
-        return res.status(200).json({
-            "message":"successfully",
-            "success":true
-        });
+    if(token){
+        //select token where id = token
+        let refreshToken = await service.getRefreshTokenByToken(token);
+        if(refreshToken === token){
+            //delete the token
+            await service.deleteToken(refreshToken);
+            return res.status(200).json("Logout successfully");
+        }
     }
-    return res.status(404).json({
-            "message":"not success",
-            "success":false
-        });
+    return res.status(404).json("forbidden");
 
 }
 const Login = async (req, res) => {
@@ -60,14 +57,14 @@ const Login = async (req, res) => {
                         const user = {id:rowOfUsers[row].id}
                         const accessToken = await generateAccessToken(user)
                         const refreshToken = await jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
-                        myCache.set(refreshToken, refreshToken);
+                        await service.insertRefreshTokenIntoRefreshTokenTABLE(refreshToken);
                         return res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken })
                     } 
                 }
             }
           
         } catch (error) {
-         
+            console.log(error);
             console.log(error.message);
             return res.status(404).json("user not success");
         }
@@ -87,13 +84,9 @@ const getAccessToken = async (req, res) => {
     let refreshToken = req.body.token;
     if (refreshToken == null) return res.sendStatus(401)
     //select item from db
-    if(myCache.has(refreshToken)){
-        const user  = await jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-        const accessToken =  await generateAccessToken({id: user.id});
-        return res.status(200).json({accessToken: accessToken});
-    }
-    return res.status(404).json("not found");
-     
+    const user  = await jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+    const accessToken =  await generateAccessToken({id: user.id});
+    return res.status(200).json({accessToken: accessToken});
 }
 
 //***** we will take of these later  ************/
